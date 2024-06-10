@@ -65,3 +65,15 @@ PacketProbe is a basic network packet analyzer developed in Python using `scapy`
 │ Payload              │ b'M-SEARCH * HTTP/1.1\r\nHOST: 2**.**.***.**:1900\r\nMAN: "ssdp:discover"\r\nMX: 1\r\nST:                                     │
 │                      │ urn:dial-multiscreen-org:service:dial:1\r\nUSER-AGENT: Chromium/1**.*.**.** Windows\r\n\r\n'                                  │
 ╰──────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+
+
+╭───────────────────────── Packet Info ──────────────────────────╮
+│ ╭──────────────────────┬─────────────────────────────────────╮ │
+│ │ Field                │ Value                               │ │
+│ ├──────────────────────┼─────────────────────────────────────┤ │
+│ │ Source IP            │ 1*.**.*.**                          │ │
+│ │ Destination IP       │ 1*.***.**.**                        │ │
+│ │ Protocol             │ ICMP                                │ │
+│ │ Payload              │ b'abcdefghijklmnopqrstuvwabcdefghi' │ │
+│ ╰──────────────────────┴─────────────────────────────────────╯ │
+╰────────────────────────────────────────────────────────────────╯
