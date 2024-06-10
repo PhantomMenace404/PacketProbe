@@ -28,7 +28,7 @@ PacketProbe is a basic network packet analyzer developed in Python using `scapy`
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/your-username/PRODIGY_CS_05.git
+    git clone https://github.com/PhantomMenace404/PRODIGY_CS_05.git
     cd PRODIGY_CS_05
     ```
 
