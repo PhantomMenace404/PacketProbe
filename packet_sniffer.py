@@ -1,5 +1,5 @@
 import argparse
-from scapy.all import sniff
+from scapy.all import sniff, IP, TCP, UDP, ICMP
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
@@ -7,25 +7,42 @@ from rich import box
 
 console = Console()
 
-def packet_callback(packet):
-    if packet.haslayer('IP'):
-        source_ip = packet[0][1].src
-        destination_ip = packet[0][1].dst
-        protocol = packet[0][1].proto
+def get_protocol_name(proto):
+    if proto == 1:
+        return "ICMP"
+    elif proto == 6:
+        return "TCP"
+    elif proto == 17:
+        return "UDP"
+    else:
+        return str(proto)
 
+def packet_callback(packet):
+    if packet.haslayer(IP):
+        source_ip = packet[IP].src
+        destination_ip = packet[IP].dst
+        protocol = get_protocol_name(packet[IP].proto)
+        
         table = Table(box=box.ROUNDED, show_header=True, header_style="bold magenta")
-        table.add_column("Field", style="dim", width=12)
+        table.add_column("Field", style="dim", width=20)
         table.add_column("Value")
 
         table.add_row("Source IP", source_ip)
         table.add_row("Destination IP", destination_ip)
-        table.add_row("Protocol", str(protocol))
+        table.add_row("Protocol", protocol)
 
-        console.print(Panel.fit(table, title="[bold blue]Packet Info[/bold blue]", border_style="blue"))
+        if packet.haslayer(TCP):
+            table.add_row("Source Port", str(packet[TCP].sport))
+            table.add_row("Destination Port", str(packet[TCP].dport))
+        elif packet.haslayer(UDP):
+            table.add_row("Source Port", str(packet[UDP].sport))
+            table.add_row("Destination Port", str(packet[UDP].dport))
 
         if packet.haslayer('Raw'):
             payload = packet['Raw'].load
-            console.print(Panel.fit(f"[bold cyan]Payload:[/bold cyan] {payload}", border_style="cyan"))
+            table.add_row("Payload", str(payload))
+
+        console.print(Panel.fit(table, title="[bold blue]Packet Info[/bold blue]", border_style="blue"))
 
 def main(interface):
     console.print(Panel.fit(f"[bold green]Starting packet capture on {interface}...[/bold green]", border_style="green"))
